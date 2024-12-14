@@ -1,50 +1,43 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// import Home from '@/components/Home.vue';
-import AddStudent from '@/components/students/AddStudent.vue';
-import EditStudent from '@/components/students/EditStudent.vue';
-import ListStudent from '@/components/students/ListStudent.vue';
+import StudentParent from "@/components/students/StudentParent.vue";
+import AddStudent from "@/components/students/AddStudent.vue";
+import EditStudent from "@/components/students/EditStudent.vue";
+import ListStudent from "@/components/students/ListStudent.vue";
 import DetailStudent from "@/components/students/DetailStudent.vue";
 
-
-
 const routes = [
-    // {
-    //     path: "/",
-    //     name: 'home',
-    //     component: Home,
-    // },
     {
         path: "/student",
+        component: StudentParent, // Composant parent pour gérer les enfants
         children: [
             {
                 path: "",
-                name: 'list-student',
-                component: ListStudent.vue,
+                name: "list-student",
+                component: ListStudent,
             },
             {
                 path: "new",
-                name: 'add-student',
-                component: AddStudent.vue,
+                name: "add-student",
+                component: AddStudent,
             },
             {
                 path: "edit/:id",
-                name: 'edit-student',
-                component: EditStudent.vue,
+                name: "edit-student",
+                component: EditStudent,
             },
             {
                 path: "show/:id",
-                name: 'detail-student',
-                component: DetailStudent.vue,
-            }
-        ]
+                name: "detail-student",
+                component: DetailStudent,
+            },
+        ],
     },
-   
 ];
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes
+    routes,
 });
 
 export default router;
