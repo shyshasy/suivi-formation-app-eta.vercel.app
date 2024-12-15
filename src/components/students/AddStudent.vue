@@ -88,7 +88,7 @@
     try {
       await studentStore.addStudent(form.value);
       toast.success('Étudiant ajouté avec succès!');
-      router.push({ name: 'list-student' }); // Assurez-vous que cette route existe
+      router.push({ name: 'list-student' }); 
     } catch (error) {
       toast.error("Erreur lors de l'ajout de l'étudiant.");
     }

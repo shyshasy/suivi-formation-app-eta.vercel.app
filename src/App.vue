@@ -18,6 +18,9 @@
             <li class="nav-item">
               <router-link to="/registration" class="nav-link text-white" activeClass="active">Inscriptions</router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/payment" class="nav-link text-white" activeClass="active">Paiements</router-link>
+            </li>
           </ul>
         </div>
       </div>

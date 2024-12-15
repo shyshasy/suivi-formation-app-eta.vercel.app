@@ -1,115 +1,124 @@
 <template>
-    <div class="registration-add-container">
-      <h2 class="text-center mb-4">Ajouter une inscription</h2>
-  
-      <form @submit.prevent="addRegistration" class="form-container">
-        <div class="form-group">
-          <!-- Sélection de l'étudiant -->
-<select v-model="newRegistration.studentId" class="form-control" required>
-  <option disabled value="">Sélectionnez un étudiant</option>
-  <option v-for="student in students" :key="student.id" :value="student.id">
-    {{ student.fullName }}  <!-- Utilise le nom complet de l'étudiant -->
-  </option>
-</select>
-        </div>
-  
-        <div class="form-group">
-          <label for="module">Module</label>
-          <!-- Sélection du module -->
-<select v-model="newRegistration.moduleId" class="form-control" required>
-  <option disabled value="">Sélectionnez un module</option>
-  <option v-for="module in modules" :key="module.id" :value="module.id">
-    {{ module.name }}  <!-- Utilise le nom du module -->
-  </option>
-</select>
-        </div>
-  
-        <div class="form-group">
-          <label for="dateRegister">Date d'inscription</label>
-          <input
-            type="date"
-            id="dateRegister"
-            v-model="newRegistration.dateRegister"
-            class="form-control"
-            required
-          />
-        </div>
-  
-        <div class="form-group">
-          <label for="startDate">Date de début</label>
-          <input
-            type="date"
-            id="startDate"
-            v-model="newRegistration.startDate"
-            class="form-control"
-            required
-          />
-        </div>
-  
-        <div class="form-group">
-          <label for="amount">Montant</label>
-          <input
-            type="number"
-            id="amount"
-            v-model="newRegistration.amount"
-            class="form-control"
-            placeholder="Montant de l'inscription"
-            required
-          />
-        </div>
-  
-        <button type="submit" class="btn btn-dark w-100 mt-4">
-          Ajouter l'inscription
-        </button>
-      </form>
-    </div>
-  </template>
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { useToast } from 'vue-toastification';
-  import { useRegistrationStore } from '@/store/registrationStore';
-  import { useStudentStore } from '@/store/studentStore';
-  import { useModuleStore } from '@/store/moduleStore';
-  
-  const router = useRouter();
-  const toast = useToast();
-  const registrationStore = useRegistrationStore();
-  const studentStore = useStudentStore();
-  const moduleStore = useModuleStore();
-  
-  const newRegistration = ref({
-    studentId: '',
-    moduleId: '',
-    dateRegister: '',
-    startDate: '',
-    amount: '',
-  });
-  
-  // Chargement des étudiants et des modules
-  onMounted(async () => {
-  await studentStore.loadStudents();
-  await moduleStore.loadModules();
-  console.log('Etudiants:', students);
-  console.log('Modules:', modules);
+  <div class="registration-add-container">
+    <h2 class="text-center mb-4">Ajouter une inscription</h2>
+
+    <form @submit.prevent="addRegistration" class="form-container">
+      <div class="form-group">
+        <label for="student">Étudiant</label>
+        <select v-model="newRegistration.studentId" class="form-control" required>
+          <option disabled value="">Sélectionnez un étudiant</option>
+          <option v-for="student in students" :key="student.id" :value="student.id">
+            {{ student.fullName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="module">Module</label>
+        <select 
+          v-model="newRegistration.moduleId" 
+          class="form-control" 
+          required 
+          @change="updateModuleDetails"
+        >
+          <option disabled value="">Sélectionnez un module</option>
+          <option v-for="module in modules" :key="module.id" :value="module.id">
+            {{ module.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="dateRegister">Date d'inscription</label>
+        <input
+          type="date"
+          id="dateRegister"
+          v-model="newRegistration.dateRegister"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="startDate">Date de début</label>
+        <input
+          type="date"
+          id="startDate"
+          v-model="newRegistration.startDate"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Montant</label>
+        <input
+          type="number"
+          id="amount"
+          v-model="newRegistration.amount"
+          class="form-control"
+          placeholder="Montant de l'inscription"
+          readonly
+        />
+      </div>
+
+      <button type="submit" class="btn btn-dark w-100 mt-4">
+        Ajouter l'inscription
+      </button>
+    </form>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { useRegistrationStore } from '@/store/registrationStore';
+import { useStudentStore } from '@/store/studentStore';
+import { useModuleStore } from '@/store/moduleStore';
+
+const router = useRouter();
+const toast = useToast();
+const registrationStore = useRegistrationStore();
+const studentStore = useStudentStore();
+const moduleStore = useModuleStore();
+
+const newRegistration = ref({
+  studentId: '',
+  moduleId: '',
+  dateRegister: '',
+  startDate: '',
+  amount: 0,
 });
 
-  // Liste des étudiants et des modules
-  const students = studentStore.students;
-  const modules = moduleStore.modules;
-  
-  // Ajouter une inscription
-  const addRegistration = async () => {
-    try {
-      await registrationStore.addRegistration(newRegistration.value);
-      toast.success('Inscription ajoutée avec succès !');
-      router.push({ name: 'list-registration' });
-    } catch (error) {
-      toast.error("Erreur lors de l'ajout de l'inscription.");
-    }
-  };
-  </script>
+onMounted(async () => {
+  await studentStore.loadStudents();
+  await moduleStore.loadModules();
+});
+
+// Chargement des données
+const students = studentStore.students;
+const modules = moduleStore.modules;
+
+// Met à jour le montant et autres détails du module
+const updateModuleDetails = () => {
+  const selectedModule = modules.find((module) => module.id === newRegistration.value.moduleId);
+  if (selectedModule) {
+    newRegistration.value.amount = selectedModule.price;
+  }
+};
+
+// Ajouter une inscription
+const addRegistration = async () => {
+  try {
+    await registrationStore.addRegistration(newRegistration.value);
+    toast.success('Inscription ajoutée avec succès !');
+    router.push({ name: 'list-registration' });
+  } catch (error) {
+    toast.error("Erreur lors de l'ajout de l'inscription.");
+  }
+};
+</script>
   
   <style scoped>
   .registration-add-container {
