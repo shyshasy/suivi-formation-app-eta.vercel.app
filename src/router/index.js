@@ -24,7 +24,7 @@ import DetailRegistration from "@/components/registrations/DetailRegistration.vu
 // Import des composants liés aux paiements
 import PaymentParent from "@/components/payments/PaymentParent.vue";
 import AddPayment from "@/components/payments/AddPayment.vue";
-// import EditPayment from "@/components/payments/EditPayment.vue";
+import EditPayment from "@/components/payments/EditPayment.vue";
 import ListPayment from "@/components/payments/ListPayment.vue";
 // import DetailPayment from "@/components/payments/DetailPayment.vue";
 
@@ -116,7 +116,7 @@ const routes = [
         children: [
             { path: "", name: "list-payment", component: ListPayment },
             { path: "new", name: "add-payment", component: AddPayment },
-            // { path: "edit/:id", name: "edit-payment", component: EditPayment },
+            { path: "edit/:id", name: "edit-payment", component: EditPayment },
             // { path: "show/:id", name: "detail-payment", component: DetailPayment },
         ],
     },
