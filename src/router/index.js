@@ -17,9 +17,9 @@ import DetailModule from "@/components/modules/DetailModule.vue";
 // Import des composants liés aux inscriptions
 import RegistrationParent from "@/components/registrations/RegistrationParent.vue";
 import AddRegistration from "@/components/registrations/AddRegistration.vue";
-// import EditRegistration from "@/components/registrations/EditRegistration.vue";
+import EditRegistration from "@/components/registrations/EditRegistration.vue";
 import ListRegistration from "@/components/registrations/ListRegistration.vue";
-// import DetailRegistration from "@/components/registrations/DetailRegistration.vue";
+import DetailRegistration from "@/components/registrations/DetailRegistration.vue";
 
 // Import des composants liés aux paiements
 import PaymentParent from "@/components/payments/PaymentParent.vue";
@@ -98,16 +98,16 @@ const routes = [
                 name: "add-registration",
                 component: AddRegistration,
             },
-            // {
-            //     path: "edit/:id",
-            //     name: "edit-registration",
-            //     component: EditRegistration,
-            // },
-            // {
-            //     path: "show/:id",
-            //     name: "detail-registration",
-            //     component: DetailRegistration,
-            // },
+            {
+                path: "edit/:id",
+                name: "edit-registration",
+                component: EditRegistration,
+            },
+            {
+                path: "show/:id",
+                name: "detail-registration",
+                component: DetailRegistration,
+            },
         ],
     },
     {
