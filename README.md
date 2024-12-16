@@ -50,6 +50,6 @@ cd Suivi_formation-App
 ##  Auteur
 [Mohamed Bankolé](https://github.com/medbankole97)
 
-[shyshasy](https://github.com/shyshasy)
+
 
 
