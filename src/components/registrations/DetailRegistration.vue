@@ -23,9 +23,9 @@
             <li class="list-group-item">
               <strong>Montant:</strong> {{ registration.amount }}
             </li>
-            <li class="list-group-item">
+            <!-- <li class="list-group-item">
               <strong>Montant restant:</strong> {{ registration.remainingAmount }}
-            </li>
+            </li> -->
           </ul>
           <div class="mt-3">
             <router-link class="btn btn-primary" :to="{ name: 'list-registration' }">Retour à la liste</router-link>
