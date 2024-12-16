@@ -35,7 +35,7 @@ const routes = [
         component: StudentParent, // Composant parent pour gérer les enfants
         children: [
             {
-                path: "",
+                path: "/",
                 name: "list-student",
                 component: ListStudent,
             },
