@@ -2,7 +2,7 @@
     <div class="add-payment-container">
       <h2 class="text-center mb-4">Ajouter un Paiement</h2>
   
-      <form @submit.prevent="submitPayment">
+      <form @submit.prevent="onSubmit">
         <!-- Date de paiement -->
         <div class="mb-3">
           <label for="paymentDate" class="form-label">Date de paiement</label>
@@ -11,6 +11,7 @@
             id="paymentDate"
             class="form-control"
             v-model="newPayment.paymentDate"
+             @blur="validateDate('paymentDate')"
             required
           />
         </div>
@@ -126,15 +127,17 @@
   import { usePaymentStore } from '@/store/paymentStore';
   import { useStudentStore } from '@/store/studentStore';
   import { useModuleStore } from '@/store/moduleStore';
-  import { useRouter } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { useToast } from 'vue-toastification';
 import { useRegistrationStore } from '../../store/registrationStore';
-  
+import dayjs from 'dayjs';
+
   const paymentStore = usePaymentStore();
   const studentStore = useStudentStore();
   const moduleStore = useModuleStore();
   const registration = useRegistrationStore();
   const router = useRouter();
+  const route = useRoute();
   const toast = useToast();
   
   // Modèle de paiement vide
@@ -148,16 +151,28 @@ import { useRegistrationStore } from '../../store/registrationStore';
     studentId: '',
     moduleId: '',
   });
+
+  const paymentId = route.params.id;
   
   onMounted(async () => {
     try {
-      console.log('Chargement des étudiants et des modules...');
+
+        const payment = await paymentStore.getPayment(paymentId);
+
+        if(payment) {
+            newPayment.value = {
+                ...payment,
+                paymentDate:dayjs(payment.paymentDate).format('YYYY-MM-DD'),
+            };
+            console.log('Données r"cupéréeez:', newPayment.value);
+        } else {
+            toast.error('payment introvable');
+            router.push({ name : 'list-payment'});
+            return;
+        }
       await studentStore.loadStudents();
-      console.log('Étudiants chargés :', studentStore.students);
       await moduleStore.loadModules();
-      console.log('Modules chargés :', moduleStore.modules);
       await registration.loadRegistrations();
-      console.log('registration chargés :', registration.registrations);
       
     } catch (error) {
       console.error('Erreur lors du chargement des données :', error);
@@ -165,24 +180,43 @@ import { useRegistrationStore } from '../../store/registrationStore';
     }
   });
 
+  const validateDate = (field) => {
+    const date = newPayment.value[field];
+    if (!dayjs(date, 'YYYY-MM-DD', true).isValid()) {
+      toast.error(`La date pour ${field} est invalide. Format attendu : YYYY-MM-DD`);
+      newPayment.value[field] = '';
+    }
+  };
+
+  const onSubmit = async () => {
+    try {
+        await paymentStore.updatePayment(paymentId, newPayment.value);
+        toast.success('Paiement modifiée avec succès !')
+        router.push({ name: 'list-payment' });
+    } catch (error) {
+        toast.error("Erreur lors de la modification de paiement.");
+      console.error('Erreur complète:', error);
+    }
+  }
+
   const students = studentStore.students;
 const modules = moduleStore.modules;
 const registrations = registration.registrations;
   
   // Fonction d'envoi du paiement
-  const submitPayment = async () => {
-    console.log('Tentative d\'ajout du paiement avec les données :', newPayment.value);
+//   const submitPayment = async () => {
+//     console.log('Tentative d\'ajout du paiement avec les données :', newPayment.value);
   
-    try {
-      await paymentStore.addPayment(newPayment.value);
-      console.log('Paiement ajouté avec succès.');
-      toast.success('Paiement ajouté avec succès!');
-      router.push('/payment'); // Redirige vers la liste des paiements
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du paiement :', error);
-      toast.error(`Erreur lors de l'ajout du paiement : ${error.message}`);
-    }
-  };
+//     try {
+//       await paymentStore.addPayment(newPayment.value);
+//       console.log('Paiement ajouté avec succès.');
+//       toast.success('Paiement ajouté avec succès!');
+//       router.push('/payment'); // Redirige vers la liste des paiements
+//     } catch (error) {
+//       console.error('Erreur lors de l\'ajout du paiement :', error);
+//       toast.error(`Erreur lors de l'ajout du paiement : ${error.message}`);
+//     }
+//   };
   </script>
   
   

@@ -24,6 +24,7 @@
             <th scope="col">Date d'inscription</th>
             <th scope="col">Date de début</th>
             <th scope="col">Montant</th>
+            <!-- <th scope="col">Montant restant à payer </th> -->
             <th scope="col" class="text-center">Actions</th>
           </tr>
         </thead>
@@ -38,6 +39,7 @@
             <td>{{ new Date(registration.dateRegister).toLocaleDateString() }}</td>
             <td>{{ new Date(registration.startDate).toLocaleDateString() }}</td>
             <td>{{ registration.amount }} €</td>
+            <!-- <td>{{ registration.remainingAmount }} €</td> -->
             <td class="text-center action-icons">
               <font-awesome-icon 
                 icon="eye" 

@@ -45,13 +45,13 @@
     <font-awesome-icon
       icon="edit"
       class="text-warning me-2 cursor-pointer"
-      @click="$router.push(`/payments/edit/${payment.id}`)"
+      @click="editPayment(payment.id)"
     />
-    <font-awesome-icon
+    <!-- <font-awesome-icon
       icon="trash"
       class="text-danger cursor-pointer"
       @click="deletePayment(payment.id)"
-    />
+    /> -->
   </td>
 </tr>
 
@@ -65,7 +65,9 @@
   import { ref, computed, onMounted } from 'vue';
   import { useToast } from 'vue-toastification';
   import { usePaymentStore } from '@/store/paymentStore';
+import { useRouter } from 'vue-router';
   
+  const router = useRouter();
   const paymentStore = usePaymentStore();
   const toast = useToast();
   const searchQuery = ref('');
@@ -80,6 +82,10 @@
       console.error('Erreur lors du chargement des paiements :', error);
     }
   };
+
+  const editPayment = async (id) =>{
+    router.push({ name: "edit-payment", params: { id } });
+  }
   
   // Supprimer un paiement
   const deletePayment = async (id) => {

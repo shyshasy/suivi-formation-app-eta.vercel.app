@@ -20,7 +20,7 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Nom</th>
-              <th scope="col">Durée (heures)</th>
+              <th scope="col">Durée (Jours)</th>
               <th scope="col">Prix ($)</th>
               <th scope="col">Statut</th>
               <th scope="col" class="text-center">Actions</th>
