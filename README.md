@@ -27,7 +27,7 @@ Ce projet est une application web de gestion permettant de gérer les **étudian
 1. Clonez le dépôt :
 
 ```bash
-git clone https://github.com/medbankole97/Suivi_formation-App.git
+git clone https://github.com/shyshasy/suivi-formation-app-eta.vercel.app.git
 ```
 
 2. Accédez au répertoire du projet :
@@ -48,7 +48,7 @@ cd Suivi_formation-App
  npm run dev
 ```
 ##  Auteur
-[Mohamed Bankolé](https://github.com/medbankole97)
+[Aichetou Taher Sy](https://github.com/medbankole97)
 
 
 
